@@ -1,0 +1,7 @@
+# ninja log v6
+25	797	7827362874466846	CMakeFiles/PR1.dir/PaMedicamento.cpp.obj	57db1d2020db8fa8
+45	799	7827362874669452	CMakeFiles/PR1.dir/Laboratorio.cpp.obj	c2c39fd95fefbee0
+34	1360	7827362874569629	CMakeFiles/PR1.dir/MediExpress.cpp.obj	e3f15c80edd2871a
+15	1826	7827365992406802	CMakeFiles/PR1.dir/main.cpp.obj	44239bb2f803d870
+1827	2135	7827366010529024	PR1.exe	ede6a12381ad6cf1
+20	72	7827358826555010	clean	8fe4f750c7254153
