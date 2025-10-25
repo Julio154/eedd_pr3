@@ -7,6 +7,7 @@
 #include "Laboratorio.h"
 #include "MediExpress.h"
 #include "PaMedicamento.h"
+#include "Avl.h"
 
 /**
  * @authors Julio Gallegos Rojas jgr00087@red.ujaen.es
@@ -17,14 +18,12 @@
  * @brief funcion que nos muestra por pantalla un menu de opciones
  */
 void menu1(){
-    std::cout<<"------MENU-----Programa de prueba 1: Enteros"<<std::endl
-    <<"1.Crear una lista de enteros inicialmente vacia"<<std::endl
-    <<"2.Insertar al final de la lista los valores crecientes desde 101 a 200"<<std::endl
-    <<"3.Insertar por el comienzo de la lista los valores decrecientes desde 98 a 1 "<<std::endl
-    <<"4.Mostrar la lista"<<std::endl
-    <<"5.Borra los 10 primeros de la lista "<<std::endl
-    <<"6.Borra los 10 ultimos de la lista "<<std::endl
-    <<"7.Borra los multiplos de 10 "<<std::endl;
+    std::cout<<"------MENU-----Programa de prueba 1: AVL"<<std::endl
+    <<"1.Buscar el CIF de esas 500 farmacias en AVL"<<std::endl
+    <<"2.Buscar el CIF de esas 500 farmacias en VectorDinamico"<<std::endl
+    <<"3.Mostrar comparacion de tiempos de las busquedas anteriores"<<std::endl
+    <<"4.Mostrar altura AVL con todas las farmacias"<<std::endl
+    <<"5.Mostrar las 100 primeras farmacias en inorden"<<std::endl;
 }
 /**
  * @brief funcion que nos muestra por pantalla un menu de opciones
@@ -66,9 +65,10 @@ int main(int argc, const char * argv[]) {
 
         int opcion;
         menu1();
-        std::cout<<"1.Crear una listaEnteros de enteros inicialmente vacia"<<std::endl;
-        ListaEnlazada<int> listaEnteros;
-        std::cout << "1.Ya esta creada Lista Tamano: " << listaEnteros.tam() << std::endl;
+        std::cout<<"Lectura de farmacias con AVL"<<std::endl;
+        std::cout << "Lectura de farmacias con VDinamico " << std::endl;
+
+
         do {
         std::cin>>opcion;
 

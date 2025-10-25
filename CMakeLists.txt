@@ -11,4 +11,7 @@ add_executable(PR1 main.cpp
         MediExpress.cpp
         MediExpress.h
         Laboratorio.cpp
-        Laboratorio.h)
+        Laboratorio.h
+        Avl.h
+        Farmacia.cpp
+        Farmacia.h)

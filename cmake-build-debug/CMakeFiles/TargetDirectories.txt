@@ -1,3 +1,3 @@
-C:/Users/Msi/Desktop/Asignaturas uni/Segundo/EEDD/Practicas/eedd_pr3/cmake-build-debug/CMakeFiles/PR1.dir
-C:/Users/Msi/Desktop/Asignaturas uni/Segundo/EEDD/Practicas/eedd_pr3/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Msi/Desktop/Asignaturas uni/Segundo/EEDD/Practicas/eedd_pr3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/silvi/CLionProjects/eedd_pr3/cmake-build-debug/CMakeFiles/PR1.dir
+C:/Users/silvi/CLionProjects/eedd_pr3/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/silvi/CLionProjects/eedd_pr3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
