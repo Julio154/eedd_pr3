@@ -8,6 +8,7 @@
 #include "MediExpress.h"
 #include "PaMedicamento.h"
 #include "Avl.h"
+#include "Farmacia.h"
 
 /**
  * @authors Julio Gallegos Rojas jgr00087@red.ujaen.es
@@ -63,69 +64,85 @@ void mostrarLaboratorios(ListaEnlazada<Laboratorio> *lista){
 int main(int argc, const char * argv[]) {
     try{
 
+        std::ifstream is;
+        std::stringstream  columnas;
+        std::string fila;
+        Avl<Farmacia> farmacias_avl;
+
+        std::string cif = "";
+        std::string provincia="";
+        std::string localidad="";
+        std::string nombre = "";
+        std::string direccion="";
+        std::string codPostal="";
+
         int opcion;
         menu1();
+
+        is.open("../farmacia.csv"); //carpeta de proyecto
+        if ( is.good() ) {
+            clock_t t_ini = clock();
+
+            while ( getline(is, fila ) ) {
+
+                //¿Se ha leído una nueva fila?
+                if (fila!="") {
+
+                    columnas.str(fila);
+
+                    //formato de fila: cif;provincia;localidad;nombre;direccion;codPostal;
+
+                    getline(columnas, cif, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                    getline(columnas, provincia,';');
+                    getline(columnas, localidad,';');
+                    getline(columnas, nombre, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                    getline(columnas, direccion,';');
+                    getline(columnas, codPostal,';');
+
+                    fila="";
+                    columnas.clear();
+
+                    Farmacia farmacia(cif,provincia,localidad,nombre,direccion,codPostal);
+                    farmacias_avl.inserta(farmacia);
+                }
+            }
+
+            is.close();
+        }
+
         std::cout<<"Lectura de farmacias con AVL"<<std::endl;
         std::cout << "Lectura de farmacias con VDinamico " << std::endl;
-
+float t_ini_ordena;
 
         do {
         std::cin>>opcion;
 
             switch (opcion) {
                 case 1: {
-                    std::cout << "Lista creada previamente para ser usable en el resto del programa"
-                    << listaEnteros.tam() << std::endl;
-                    break;
-                }
+                    std::cout << "Lista creada previamente para ser usable en el resto del programa";
+                   }
                 case 2: {
-                    clock_t t_ini_ordena = clock();
-                    for (int i = 101; i <= 200; i++) {
-                        listaEnteros.insertaFin(i);
                     }
                     std::cout << "Tiempo insertar: " << ((clock() - t_ini_ordena) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
                     break;
-                }
-                case 3: {
-                    clock_t t_ini_ordenaRev = clock();
-                    for (int i = 98; i >= 1; --i) {
-                        listaEnteros.insertaInicio(i);
-                    }
-                    std::cout << "Tiempo insertar: " << ((clock() - t_ini_ordenaRev) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+
+                case 3:
                     break;
-                }
+
                 case 4: {
-                    mostrarEnteros(&listaEnteros);
-                    break;
                 }
                 case 5: {
-                    for (int i = 0; i < 10; ++i) {
-                        listaEnteros.borraInicio();
-                    }
                     std::cout << "Se han borrado los 10 primeros elementos" << std::endl;
                     break;
                 }
                 case 6: {
-                    for (int i = 0; i < 10; ++i) {
-                        listaEnteros.borraFinal();
-                    }
+
                     std::cout << "Se han borrado los 10 ultimos elementos" << std::endl;
                     break;
                 }
                 case 7: {
-                    int c=0;
-                    for (ListaEnlazada<int> ::Iterador it=listaEnteros.iteradorInicio();c<listaEnteros.tam();it.siguiente()){
-                        if (it.dato()%10==0) {
-                            std::cout << "Se va a borrar " << it.dato() << std::endl;
-                            listaEnteros.borra(it);
-                        }
-                        c++;
                     }
-                    std::cout << "Se han borrado los multiplos de 10" << std::endl;
-                    std::cout<<"Muestro la lista despues de eliminar"<<std::endl;
-                    mostrarEnteros(&listaEnteros);
-                    break;
-                }
+
             }
 
         }while (opcion > 0 && opcion < 8);
@@ -137,13 +154,9 @@ int main(int argc, const char * argv[]) {
             VDinamico<PaMedicamento> medication;
             ListaEnlazada<Laboratorio> labs;
 
-            std::ifstream is;
-            std::stringstream  columnas;
-            std::string fila;
 
             std::string id_number = "";
             std::string id_alpha="";
-            std::string nombre="";
 
             is.open("../pa_medicamentos.csv"); //carpeta de proyecto
             if ( is.good() ) {
