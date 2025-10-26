@@ -78,10 +78,13 @@ int main(int argc, const char * argv[]) {
 
         int opcion;
         menu1();
+ std::cout<<"Lectura de farmacias en avl"<<std::endl;
 
-        is.open("../farmacia.csv"); //carpeta de proyecto
+        is.open("../farmacias.csv"); //carpeta de proyecto
+        clock_t t_ini_avl;
+
         if ( is.good() ) {
-            clock_t t_ini = clock();
+            t_ini_avl = clock();
 
             while ( getline(is, fila ) ) {
 
@@ -110,23 +113,74 @@ int main(int argc, const char * argv[]) {
             is.close();
         }
 
-        std::cout<<"Lectura de farmacias con AVL"<<std::endl;
+        clock_t t_ini_vdinamico;
+        std::cout<<"Lectura de farmacias con Vdinamico"<<std::endl;
+        VDinamico<Farmacia> farmacias_vdinamico;
+
+        int contador=0;
+        VDinamico<std::string> VdinCif;
+        is.open("../farmacias.csv"); //carpeta de proyecto
+        if ( is.good() ) {
+            t_ini_vdinamico = clock();
+            while ( getline(is, fila ) ) {
+                //¿Se ha leído una nueva fila?
+                if (fila!="") {
+
+                    columnas.str(fila);
+
+                    //formato de fila: cif;provincia;localidad;nombre;direccion;codPostal;
+
+                    getline(columnas, cif, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                    getline(columnas, provincia,';');
+                    getline(columnas, localidad,';');
+                    getline(columnas, nombre, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                    getline(columnas, direccion,';');
+                    getline(columnas, codPostal,';');
+
+                    fila="";
+                    columnas.clear();
+
+                    if (contador<500) {
+                        VdinCif.insertar(cif);
+                    }
+                    Farmacia farmacia(cif,provincia,localidad,nombre,direccion,codPostal);
+                    farmacias_vdinamico.insertar(farmacia);
+                }
+            }
+            is.close();
+        }
+
         std::cout << "Lectura de farmacias con VDinamico " << std::endl;
 float t_ini_ordena;
-
+MediExpress mediAux(farmacias_avl);
         do {
         std::cin>>opcion;
 
             switch (opcion) {
                 case 1: {
-                    std::cout << "Lista creada previamente para ser usable en el resto del programa";
+                    std::cout <<"1.Buscar el CIF de esas 500 farmacias en AVL"<<std::endl;
+                    clock_t t_ini_busqueda=clock();
+                    for (int i=0;i<500;i++) {
+                        mediAux.buscarFarmacia(VdinCif[i]);
+                    }
+                    clock_t t_fin_busqueda=clock();
+                    std::cout << "Tiempo insertar: " << ((t_fin_busqueda - t_ini_busqueda) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+
                    }
+                    break;
                 case 2: {
                     }
+
+                    std::cout<<"2.Buscar el CIF de esas 500 farmacias en VectorDinamico"<<std::endl;
+
                     std::cout << "Tiempo insertar: " << ((clock() - t_ini_ordena) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
                     break;
 
                 case 3:
+                    std::cout<<"3.Mostrar comparacion de tiempos de las busquedas anteriores"<<std::endl;
+
+                    std::cout << "Tiempo insertar en AVL: " << (( t_ini_avl) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+                    std::cout << "Tiempo insertar en VDinamico: " << ((t_ini_vdinamico) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
                     break;
 
                 case 4: {

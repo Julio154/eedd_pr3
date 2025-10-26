@@ -4,6 +4,8 @@
 
 #ifndef PR1_MEDIEXPRESS_H
 #define PR1_MEDIEXPRESS_H
+#include "Avl.h"
+#include "Farmacia.h"
 #include "Laboratorio.h"
 #include "ListaEnlazada.h"
 #include "PaMedicamento.h"
@@ -15,11 +17,12 @@ class MediExpress
     private:
         ListaEnlazada<Laboratorio> labs;
         VDinamico<PaMedicamento> medication;
+        Avl<Farmacia> pharmacy;
     public:
         MediExpress();
         ~MediExpress();
 
-        MediExpress(const ListaEnlazada<Laboratorio> &labs);
+        MediExpress(const Avl<Farmacia> &pharmacy);
 
         MediExpress(const ListaEnlazada<Laboratorio> &labs, const VDinamico<PaMedicamento> &medication);
 
@@ -38,6 +41,8 @@ class MediExpress
         void set_labs(const ListaEnlazada<Laboratorio> &labs);
 
         VDinamico<PaMedicamento> get_medication() const;
+
+    Farmacia* buscarFarmacia(std::string cif);
 
 };
 

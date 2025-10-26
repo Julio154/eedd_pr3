@@ -17,6 +17,10 @@ MediExpress::MediExpress(const ListaEnlazada<Laboratorio> &labs, const VDinamico
     medication(medication)
 {}
 
+ MediExpress::MediExpress(const Avl<Farmacia> &pharmacy)
+            : pharmacy(pharmacy) {
+}
+
 MediExpress::MediExpress(const MediExpress &orig):
     labs(orig.labs),
     medication(orig.medication) {
@@ -96,5 +100,13 @@ VDinamico<PaMedicamento *> MediExpress::getMedicamSinLab() {
 
 ListaEnlazada<Laboratorio>& MediExpress::get_labs()  {
     return labs;
+}
+
+Farmacia * MediExpress::buscarFarmacia(std::string cif) {
+Farmacia* busqueda;
+    Farmacia aux;
+    aux.set_cif(cif);
+    busqueda=pharmacy.buscaIt(aux);
+    return busqueda;
 }
 
