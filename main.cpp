@@ -19,6 +19,7 @@
  * @brief funcion que nos muestra por pantalla un menu de opciones
  */
 void menu1(){
+    std::cout<<std::endl<<std::endl;
     std::cout<<"------MENU-----Programa de prueba 1: AVL"<<std::endl
     <<"1.Buscar el CIF de esas 500 farmacias en AVL"<<std::endl
     <<"2.Buscar el CIF de esas 500 farmacias en VectorDinamico"<<std::endl
@@ -77,7 +78,6 @@ int main(int argc, const char * argv[]) {
         std::string codPostal="";
 
         int opcion;
-        menu1();
  std::cout<<"Lectura de farmacias en avl"<<std::endl;
 
         is.open("../farmacias.csv"); //carpeta de proyecto
@@ -150,56 +150,68 @@ int main(int argc, const char * argv[]) {
             is.close();
         }
 
-        std::cout << "Lectura de farmacias con VDinamico " << std::endl;
-float t_ini_ordena;
-MediExpress mediAux(farmacias_avl);
+        clock_t t_ini_busqueda_vdin, t_fin_busqueda_vdin, t_fin_busqueda_avl, t_ini_busqueda_avl;
+MediExpress mediAuxAvl(farmacias_avl);
         do {
+            menu1();
         std::cin>>opcion;
 
             switch (opcion) {
                 case 1: {
                     std::cout <<"1.Buscar el CIF de esas 500 farmacias en AVL"<<std::endl;
-                    clock_t t_ini_busqueda=clock();
+                     t_ini_busqueda_avl=clock();
                     for (int i=0;i<500;i++) {
-                        mediAux.buscarFarmacia(VdinCif[i]);
+                        mediAuxAvl.buscarFarmacia(VdinCif[i]);
                     }
-                    clock_t t_fin_busqueda=clock();
-                    std::cout << "Tiempo insertar: " << ((t_fin_busqueda - t_ini_busqueda) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+                     t_fin_busqueda_avl=clock();
+                    std::cout << "Tiempo insertar: " << ((double)(t_fin_busqueda_avl - t_ini_busqueda_avl) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
 
                    }
                     break;
                 case 2: {
-                    }
-
                     std::cout<<"2.Buscar el CIF de esas 500 farmacias en VectorDinamico"<<std::endl;
+                    t_ini_busqueda_vdin=clock();
+                    for (int i=0;i<500;i++) {
+                        for (int j=0;j<farmacias_vdinamico.getTamlog();j++){
+                            if (farmacias_vdinamico[j].get_cif()==VdinCif[i]) {
+                                break;
+                            }
+                        }
+                    }
+                     t_fin_busqueda_vdin=clock();
 
-                    std::cout << "Tiempo insertar: " << ((clock() - t_ini_ordena) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+                    std::cout << "Tiempo insertar: " << ((double)(t_fin_busqueda_vdin - t_ini_busqueda_vdin) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
                     break;
-
+                }
                 case 3:
                     std::cout<<"3.Mostrar comparacion de tiempos de las busquedas anteriores"<<std::endl;
 
                     std::cout << "Tiempo insertar en AVL: " << (( t_ini_avl) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
                     std::cout << "Tiempo insertar en VDinamico: " << ((t_ini_vdinamico) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+
+                    std::cout << "Tiempo busqueda AVL: " << ((double)(t_fin_busqueda_avl - t_ini_busqueda_avl) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+                    std::cout << "Tiempo busqueda Vdin: " << ((double)(t_fin_busqueda_vdin - t_ini_busqueda_vdin) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+
                     break;
 
                 case 4: {
+                    std::cout<<"4.Mostrar altura AVL con todas las farmacias"<<std::endl;
+                    std::cout<<"Altura: "<<farmacias_avl.altura() <<std::endl;
+                    break;
                 }
                 case 5: {
-                    std::cout << "Se han borrado los 10 primeros elementos" << std::endl;
-                    break;
-                }
-                case 6: {
+                    std::cout <<"5.Mostrar las 100 primeras farmacias en inorden"<<std::endl;
 
-                    std::cout << "Se han borrado los 10 ultimos elementos" << std::endl;
-                    break;
-                }
-                case 7: {
+                    VDinamico<Farmacia*> aux = farmacias_avl.recorreInorden();
+                    for (int i=0;i<100;i++) {
+                        std::cout<<aux[i]->get_cif() <<std::endl;
                     }
-
+                    std::cout<<std::endl;
+                    break;
+                }
             }
 
-        }while (opcion > 0 && opcion < 8);
+        }while (opcion > 0 && opcion < 6);
 
 
 
