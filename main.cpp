@@ -32,12 +32,12 @@ void menu1(){
  */
 void menu2(){
     std::cout<<"------MENU-----Programa de prueba 2: LAS OPCIONES NO CONTEMPLADAS TE PERMITEN SALIR"<<std::endl
-            <<"1.Buscar todos los laboratorios en Granada o provincia"<<std::endl
-            <<"2.Buscar cuantos laboratorios hay en Jaen"<<std::endl
-            <<"3.Buscar cuantos laboratorios hay en Madrid"<<std::endl
-            <<"4.Mostrar todos los laboratorios que suministran todos los productos que sean ACEITES"<<std::endl
-            <<"5.Hacer que los 152 medicamentos sin suministradores sean suministrados por los primeros 152 laboratorios ubicados en Madrid de forma consecutiva"<<std::endl
-            <<"6.PAREJAS: eliminar los laboratorios de Bruselas"<<std::endl;
+            <<"1.Crear un vector tipo buffer con los siguientes CIF de farmacia"<<std::endl
+            <<"2.Para todas las farmacias anteriores, buscar si alguna de ellas dispensa el ÓXIDO DE "<<
+            "MAGNESIO” con ID=3640, y si no lo venden, hacer el pedido correspondiente. "<<std::endl
+            <<"3.Buscar y contar todos los laboratorios con MAGNESIO"<<std::endl
+            <<"4.PAREJAS: Localizar los medicamentos por nombre.Localizar todos los laboratorios "
+              "que suministran a alguna farmacia medicamentos con  VIRUS "<<std::endl;
 }
 /**
  * @brief funcion que nos muestra la lista de enteros
@@ -291,103 +291,29 @@ MediExpress mediAuxAvl(farmacias_avl);
                 }
             }
 
+// empezar en esta parte
+
             MediExpress medi_express(labs,medication);
             medi_express.suministrarMed();
             do {
                 std::cin>>opcion;
                 switch (opcion) {
                     case 1: {
-                        std::cout << "1.Buscar todos los laboratorios en Granada o provincia"<<std::endl;
-                        ListaEnlazada<Laboratorio> labs_granada(medi_express.buscarLabCiudad("Granada"));
-                        std::cout<<"Los laboratorios de granada son:"<<std::endl;
-                        mostrarLaboratorios(&labs_granada);
-                        std::cout <<"Son un total de "<<labs_granada.tam()<< std::endl;
                         break;
                     }
                     case 2: {
-                        std::cout<<"2.Buscar cuantos laboratorios hay en Jaen"<<std::endl;
-                        ListaEnlazada<Laboratorio>  labs_jaen(medi_express.buscarLabCiudad("Jaen"));
-                        std::cout<<"Los laboratorios de Jaen son : "<<std::endl;
-                        mostrarLaboratorios(&labs_jaen);
-                        std::cout<<"Son un total de "<<labs_jaen.tam()<<std::endl;
                         break;
                     }
                     case 3: {
-                        std::cout<<"3.Buscar cuantos laboratorios hay en Madrid"<<std::endl;
-                        ListaEnlazada<Laboratorio>  labs_madrid(medi_express.buscarLabCiudad("Madrid"));
-                        std::cout<<"Los laboratorios de Madrid y provincia son : "<<std::endl;
-                        mostrarLaboratorios(&labs_madrid);
-                        std::cout<<"Son un total de "<<labs_madrid.tam()<<std::endl;
-
-                        std::cout<<"Si hablamos solo de Madrid ciudad"<<std::endl;
-                        ListaEnlazada<Laboratorio>  labs_madrid_ciudad(medi_express.buscarLabSoloCiudad("Madrid"));
-                        std::cout<<"Los laboratorios de Madrid son : "<<std::endl;
-                        mostrarLaboratorios(&labs_madrid_ciudad);
-                        std::cout<<"Son un total de "<<labs_madrid_ciudad.tam()<<std::endl;
                         break;
                     }
                     case 4: {
-                        std::cout<<"4.Mostrar todos los laboratorios que suministran todos los productos que sean ACEITES"<<std::endl;
-
-                        ListaEnlazada<Laboratorio> labs_aceites;
-                        VDinamico<PaMedicamento*> medicamentos_aceites= medi_express.buscarCompuesto("ACEITE");
-                        ListaEnlazada<Laboratorio> labs_copia=medi_express.get_labs();
-
-                        for (ListaEnlazada<Laboratorio>::Iterador it = labs_copia.iteradorInicio(); !it.fin(); it.siguiente()) {
-                            Laboratorio &lab = it.dato();
-                            bool suministra_todos = true;
-
-                            for (int j = 0; j < medicamentos_aceites.getTamlog(); j++) {
-                                PaMedicamento* med = medicamentos_aceites[j];
-                                if (med != nullptr || med->servidoPor() != lab.get_nombre_lab()) {
-                                    suministra_todos = false;
-                                }
-
-                            }
-                            if (suministra_todos) {
-                                labs_aceites.insertaFin(lab);
-                            }
-                        }
-
-                        mostrarLaboratorios(&labs_aceites);
-                        std::cout<<"Son un total de "<<labs_aceites.tam()<<std::endl;
                         break;
                     }
                     case 5: {
-                        std::cout<<"5.Hacer que los 152 medicamentos sin suministradores sean suministrados por los primeros 152"
-                                   " laboratorios ubicados en Madrid de forma consecutiva"<<std::endl;
-
-                        VDinamico<PaMedicamento*> meds_sin_lab= medi_express.getMedicamSinLab();
-                        ListaEnlazada<Laboratorio> labs_madrid2(medi_express.buscarLabSoloCiudad("Madrid"));
-                        std::cout<<"Medicamentos sin laboratorio antes de: "<<meds_sin_lab.getTamlog()<<std::endl;
-                        std::cout<<"Laboratorios en Madrid: "<<labs_madrid2.tam()<<std::endl;
-
-                        int contador=0;
-                        for (ListaEnlazada<Laboratorio> ::Iterador it= labs_madrid2.iteradorInicio();!it.fin() && contador<meds_sin_lab.getTamlog() ; it.siguiente()) {
-                            meds_sin_lab[contador]->setLab(it.dato());
-                            contador++;
-                        }
-                        std::cout<<"Medicamentos sin laboratorio despues de: "<<meds_sin_lab.getTamlog()<<std::endl;
                         break;
                     }
                     case 6: {
-                        std::cout<<"6.PAREJAS: eliminar los laboratorios de Bruselas"<<std::endl;
-
-                        std::cout<<"Numero total actual: " <<medi_express.get_labs().tam()<<std::endl;
-
-                        ListaEnlazada<Laboratorio>  labs_bruselas(medi_express.buscarLabCiudad("Bruselas"));
-                        std::cout<<"Los laboratorios de Bruselas son : "<<std::endl;
-                        mostrarLaboratorios(&labs_bruselas);
-                        std::cout<<"Son un total de "<<labs_bruselas.tam()<<std::endl;
-                        std::cout<<"Hay un total de "<<medi_express.get_labs().tam()<<std::endl;
-
-                        std::cout<<"Vamos a borrar esos laboratorios "<<std::endl;
-                        for (ListaEnlazada<Laboratorio> ::Iterador it= medi_express.get_labs().iteradorInicio();!it.fin() ; it.siguiente()) {
-                            if (it.dato().get_localidad().find("Bruselas")!= std::string::npos) {
-                                medi_express.get_labs().borra(it);
-                            }
-                        }
-                        std::cout<<"Numero total despues del borrado: " <<medi_express.get_labs().tam()<<std::endl;
                         break;
                     }
                 }
