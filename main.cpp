@@ -185,10 +185,7 @@ MediExpress mediAuxAvl(farmacias_avl);
                 }
                 case 3:
                     std::cout<<"3.Mostrar comparacion de tiempos de las busquedas anteriores"<<std::endl;
-
-                    std::cout << "Tiempo insertar en AVL: " << (( t_ini_avl) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
-                    std::cout << "Tiempo insertar en VDinamico: " << ((t_ini_vdinamico) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
-
+                    
                     std::cout << "Tiempo busqueda AVL: " << ((double)(t_fin_busqueda_avl - t_ini_busqueda_avl) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
                     std::cout << "Tiempo busqueda Vdin: " << ((double)(t_fin_busqueda_vdin - t_ini_busqueda_vdin) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
 
@@ -291,33 +288,67 @@ MediExpress mediAuxAvl(farmacias_avl);
                 }
             }
 
-// empezar en esta parte
 
             MediExpress medi_express(labs,medication);
             medi_express.suministrarMed();
+        VDinamico<std::string> bufferCif;
             do {
                 std::cin>>opcion;
                 switch (opcion) {
                     case 1: {
+                        std::cout<<"<1.Crear un vector tipo buffer con los siguientes CIF de farmacia"<<std::endl;
+                        std::cout<<"CIF:37656422V, 46316032N, 77092934Q, 33961602D, B62351861, B62351861, "<<
+                            "B65828113, 46138599R, 35069965W, 37579913Y, 37682300C, "
+                            <<"37643742X, 46112335A, 47980171D, 38116138D, 46315600V, "
+                            <<"37640233C, 37931842N, 33964303L, 35022080A, B66046640, "
+                            <<"E66748344, 47640201W, B66621954, 46121385Z, X6806622W, "
+                            <<"46046390E"<<std::endl;
+                        bufferCif.insertar("37656422V");
+                        bufferCif.insertar("46316032N");
+                        bufferCif.insertar("77092934Q");
+                        bufferCif.insertar("33961602D");
+                        bufferCif.insertar("B62351861");
+                        bufferCif.insertar("B62351861");
+                        bufferCif.insertar("37643742X");
+                        bufferCif.insertar("46112335A");
+                        bufferCif.insertar("47980171D");
+                        bufferCif.insertar("38116138D");
+                        bufferCif.insertar("46315600V");
+                        bufferCif.insertar("37640233C");
+                        bufferCif.insertar("37931842N");
+                        bufferCif.insertar("33964303L");
+                        bufferCif.insertar("35022080A");
+                        bufferCif.insertar("B66046640");
+                        bufferCif.insertar("E66748344");
+                        bufferCif.insertar("47640201W");
+                        bufferCif.insertar("B66621954");
+                        bufferCif.insertar("46121385Z");
+                        bufferCif.insertar("X6806622W");
+                        bufferCif.insertar("46046390E");
+
+                    std::cout<<"Datos insertados"<<std::endl;
                         break;
                     }
+
+                        // empezar en esta parte
                     case 2: {
+                        std::cout<<"2.Para todas las farmacias anteriores, buscar si alguna de ellas dispensa el ÓXIDO DE "<<
+                        "MAGNESIO” con ID=3640, y si no lo venden, hacer el pedido correspondiente. "<<std::endl;
                         break;
                     }
                     case 3: {
+                        std::cout<<"3.Buscar y contar todos los laboratorios con MAGNESIO"<<std::endl;
+
                         break;
                     }
                     case 4: {
+                        std::cout<<"4.PAREJAS: Localizar los medicamentos por nombre.Localizar todos los laboratorios "
+                        "que suministran a alguna farmacia medicamentos con  VIRUS "<<std::endl;
                         break;
                     }
-                    case 5: {
-                        break;
-                    }
-                    case 6: {
-                        break;
-                    }
+
                 }
-        }while(opcion>0 && opcion<7);
+        }while(opcion>0 && opcion<5);
     } catch (std::exception) {
             std::cerr<<"ERROR";
     }
