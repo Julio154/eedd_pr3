@@ -115,7 +115,7 @@ int main(int argc, const char * argv[]) {
 
         clock_t t_ini_vdinamico;
         std::cout<<"Lectura de farmacias con Vdinamico"<<std::endl;
-        VDinamico<Farmacia> farmacias_vdinamico;
+        VDinamico<Farmacia*> farmacias_vdinamico;
 
         int contador=0;
         VDinamico<std::string> VdinCif;
@@ -144,14 +144,14 @@ int main(int argc, const char * argv[]) {
                         VdinCif.insertar(cif);
                     }
                     Farmacia farmacia(cif,provincia,localidad,nombre,direccion,codPostal);
-                    farmacias_vdinamico.insertar(farmacia);
+                    farmacias_vdinamico.insertar(&farmacia);
                 }
             }
             is.close();
         }
 
         clock_t t_ini_busqueda_vdin, t_fin_busqueda_vdin, t_fin_busqueda_avl, t_ini_busqueda_avl;
-MediExpress mediAuxAvl(farmacias_avl);
+        MediExpress mediAuxAvl(farmacias_avl);
         do {
             menu1();
         std::cin>>opcion;
@@ -173,7 +173,7 @@ MediExpress mediAuxAvl(farmacias_avl);
                     t_ini_busqueda_vdin=clock();
                     for (int i=0;i<500;i++) {
                         for (int j=0;j<farmacias_vdinamico.getTamlog();j++){
-                            if (farmacias_vdinamico[j].get_cif()==VdinCif[i]) {
+                            if (farmacias_vdinamico[j]->get_cif()==VdinCif[i]) {
                                 break;
                             }
                         }
@@ -289,8 +289,9 @@ MediExpress mediAuxAvl(farmacias_avl);
             }
 
 
-            MediExpress medi_express(labs,medication);
+            MediExpress medi_express(labs,medication,farmacias_avl);
             medi_express.suministrarMed();
+
         VDinamico<std::string> bufferCif;
             do {
                 std::cin>>opcion;
@@ -334,6 +335,26 @@ MediExpress mediAuxAvl(farmacias_avl);
                     case 2: {
                         std::cout<<"2.Para todas las farmacias anteriores, buscar si alguna de ellas dispensa el ÓXIDO DE "<<
                         "MAGNESIO” con ID=3640, y si no lo venden, hacer el pedido correspondiente. "<<std::endl;
+
+                        for (int i = 0; i < bufferCif.getTamlog(); i++) {
+                            Farmacia *farm = medi_express.buscarFarmacia(bufferCif[i]);
+
+                            if (farm == nullptr) {
+                                std::cout<<"La farmacia " << bufferCif[i] << " no existe."<<std::endl;
+                            }
+                            else {
+                                PaMedicamento *med = &farm->buscaMedicam(3640);
+                                if (med == nullptr) {
+                                    std::cout<<"La farmacia " << bufferCif[i] << " no vende el medicamento con ID=3640."<<std::endl;
+                                    farm->pedidoMedicam(3640);
+                                    std::cout<<"Se ha pedido el medicamento con ID=3640."<<std::endl;
+                                }
+                                else {
+                                    std::cout<<"La farmacia " << bufferCif[i] << " vende el medicamento con ID=3640."<<std::endl;
+                                }
+                            }
+                        }
+
                         break;
                     }
                     case 3: {

@@ -8,6 +8,7 @@ class MediExpress;
 #include <string>
 //#include "MediExpress.h"
 #include "PaMedicamento.h"
+#include "VDinamico.h"
 class Farmacia {
 private:
     std::string cif;
@@ -16,8 +17,8 @@ private:
     std::string nombre;
     std::string direccion;
     std::string codPostal;
+    VDinamico<PaMedicamento*> dispense;
     MediExpress *linkMedi;
-
 
 public:
     Farmacia();

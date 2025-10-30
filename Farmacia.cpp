@@ -10,19 +10,34 @@ Farmacia::Farmacia()=default;
 
 Farmacia::Farmacia(const std::string &cif, const std::string &provincia, const std::string &localidad,
                    const std::string &nombre, const std::string &direccion, const std::string &cod_postal)
-        : cif(cif),
-          provincia(provincia),
-          localidad(localidad),
-          nombre(nombre),
-          direccion(direccion),
-          codPostal(cod_postal) {
-}
+        :cif(cif),
+        provincia(provincia),
+        localidad(localidad),
+        nombre(nombre),
+        direccion(direccion),
+        codPostal(cod_postal),
+        dispense(),
+        linkMedi(nullptr)
+{}
 
 PaMedicamento& Farmacia::buscaMedicam(int id_num) {
+
+    PaMedicamento *medicam = nullptr;
+    for (int i = 0; i < dispense.getTamlog(); i++) {
+        if (dispense[i]->get_id_num() == id_num) {
+            medicam = dispense[i];
+            break;
+        }
+    }
+    return *medicam;
 }
 
 void Farmacia::pedidoMedicam(int id_num) {
+    linkMedi->suministrarFarmacia(*this,id_num);
+}
 
+void Farmacia::dispensaMedicam(PaMedicamento pa) {
+    dispense.insertar(&pa);
 }
 
 

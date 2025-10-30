@@ -17,7 +17,11 @@ MediExpress::MediExpress(const ListaEnlazada<Laboratorio> &labs, const VDinamico
     medication(medication)
 {}
 
- MediExpress::MediExpress(const Avl<Farmacia> &pharmacy)
+MediExpress::MediExpress(const ListaEnlazada<Laboratorio> &labs, const VDinamico<PaMedicamento> &medication,
+    const Avl<Farmacia> &pharmacy): labs(labs), medication(medication), pharmacy(pharmacy){
+}
+
+MediExpress::MediExpress(const Avl<Farmacia> &pharmacy)
             : pharmacy(pharmacy) {
 }
 
@@ -102,11 +106,36 @@ ListaEnlazada<Laboratorio>& MediExpress::get_labs()  {
     return labs;
 }
 
+PaMedicamento MediExpress::buscarCompuesto(int id_num) {
+    PaMedicamento medicam;
+    for (unsigned int i = 0; i < medication.getTamlog(); ++i) {
+        if (medication[i].get_id_num() == id_num) {
+            medicam = medication[i];
+            break;
+        }
+    }
+    return medicam;
+}
+
 Farmacia * MediExpress::buscarFarmacia(std::string cif) {
-Farmacia* busqueda;
     Farmacia aux;
     aux.set_cif(cif);
-    busqueda=pharmacy.buscaIt(aux);
-    return busqueda;
+    return pharmacy.buscaIt(aux);
+}
+
+void MediExpress::suministrarFarmacia(Farmacia &f, int id_num) {
+    PaMedicamento medicam = buscarCompuesto(id_num);
+    f.dispensaMedicam(medicam);
+
+}
+
+ListaEnlazada<Laboratorio> MediExpress::buscarLabs(PaMedicamento med) {
+    ListaEnlazada<Laboratorio> nuevaLista;
+    for (ListaEnlazada<Laboratorio> ::Iterador it= labs.iteradorInicio();!it.fin() ; it.siguiente()) {
+        if (it.dato().get_nombre_lab().find(med.get_nombre()) != std::string::npos) {
+            nuevaLista.insertaFin(it.dato());
+        }
+    }
+    return nuevaLista;
 }
 
