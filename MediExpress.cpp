@@ -27,9 +27,9 @@ MediExpress::MediExpress(const Avl<Farmacia> &pharmacy)
 
 MediExpress::MediExpress(const MediExpress &orig):
     labs(orig.labs),
-    medication(orig.medication) {
-
-}
+    medication(orig.medication),
+    pharmacy(orig.pharmacy)
+{}
 
 
 void MediExpress::suministrarMed() {
@@ -106,15 +106,20 @@ ListaEnlazada<Laboratorio>& MediExpress::get_labs()  {
     return labs;
 }
 
-PaMedicamento MediExpress::buscarCompuesto(int id_num) {
-    PaMedicamento medicam;
-    for (unsigned int i = 0; i < medication.getTamlog(); ++i) {
+VDinamico<PaMedicamento *> MediExpress::get_medication() {
+    VDinamico<PaMedicamento*> meds;
+    for (int i = 0; i < medication.getTamlog(); i++)
+        meds[meds.getTamlog()] = &medication[i];
+    return meds;
+}
+
+PaMedicamento *MediExpress::buscarCompuesto(int id_num) {
+    for (unsigned i = 0; i < medication.getTamlog(); ++i) {
         if (medication[i].get_id_num() == id_num) {
-            medicam = medication[i];
-            break;
+            return &medication[i];
         }
     }
-    return medicam;
+    return nullptr;
 }
 
 Farmacia * MediExpress::buscarFarmacia(std::string cif) {
@@ -124,8 +129,9 @@ Farmacia * MediExpress::buscarFarmacia(std::string cif) {
 }
 
 void MediExpress::suministrarFarmacia(Farmacia &f, int id_num) {
-    PaMedicamento medicam = buscarCompuesto(id_num);
-    f.dispensaMedicam(medicam);
+    PaMedicamento *medicam = buscarCompuesto(id_num);
+    if (medicam != nullptr)
+        f.dispensaMedicam(medicam);
 
 }
 

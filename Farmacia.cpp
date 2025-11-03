@@ -20,24 +20,43 @@ Farmacia::Farmacia(const std::string &cif, const std::string &provincia, const s
         linkMedi(nullptr)
 {}
 
-PaMedicamento& Farmacia::buscaMedicam(int id_num) {
+Farmacia::Farmacia(const Farmacia &other):
+    cif(other.cif),
+    provincia(other.provincia),
+    localidad(other.localidad),
+    nombre(other.nombre),
+    direccion(other.direccion),
+    codPostal(other.codPostal),
+    dispense(other.dispense),
+    linkMedi(other.linkMedi)
+{}
 
-    PaMedicamento *medicam = nullptr;
+PaMedicamento *Farmacia::buscaMedicam(int id_num) {
+
     for (int i = 0; i < dispense.getTamlog(); i++) {
         if (dispense[i]->get_id_num() == id_num) {
-            medicam = dispense[i];
-            break;
+            return dispense[i];
         }
     }
-    return *medicam;
+    return nullptr;
+}
+
+VDinamico<PaMedicamento*> Farmacia::buscaMedicam(std::string nombreMed) {
+    VDinamico<PaMedicamento*> medicamentos;
+    for (int i = 0; i < dispense.getTamlog(); i++) {
+        if (dispense[i]->get_nombre().find(nombreMed) != std::string::npos) {
+            medicamentos.insertar(dispense[i]);
+        }
+    }
+    return medicamentos;
 }
 
 void Farmacia::pedidoMedicam(int id_num) {
     linkMedi->suministrarFarmacia(*this,id_num);
 }
 
-void Farmacia::dispensaMedicam(PaMedicamento pa) {
-    dispense.insertar(&pa);
+void Farmacia::dispensaMedicam(PaMedicamento *pa) {
+    dispense.insertar(pa);
 }
 
 

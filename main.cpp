@@ -59,6 +59,17 @@ void mostrarLaboratorios(ListaEnlazada<Laboratorio> *lista){
     std::cout<<std::endl;
 }
 
+void mostrarFarmaciasMedicamento(MediExpress medi_express) {
+    std::cout<<"Farmacias con medicamentos: "<<std::endl;
+    VDinamico<Farmacia*> farmacias = medi_express.get_pharmacy().recorreInorden();
+    for (int i = 0; i < farmacias.getTamlog(); i++) {
+        std::cout<<farmacias[i]->get_nombre()<<"  :  "<<std::endl;
+        for (int j = 0; j < farmacias[i]->medicamentosDispensados().getTamlog();j++) {
+            std::cout<<"     "<<farmacias[i]->medicamentosDispensados()[j]->get_nombre()<<"\n";
+        }
+    }
+}
+
 /**
  * @author Silvia Cruz Roman scr00043@red.ujaen.es
  */
@@ -289,8 +300,27 @@ int main(int argc, const char * argv[]) {
             }
 
 
+
+
             MediExpress medi_express(labs,medication,farmacias_avl);
             medi_express.suministrarMed();
+
+        {
+            VDinamico<Farmacia*> farms = farmacias_avl.recorreInorden();
+
+            int j= 0;
+            for (int i = 0; i < farms.getTamlog(); i++) {
+                int k = 0;
+                while (j < medication.getTamlog() && k < 100) {
+                    medi_express.suministrarFarmacia(*farms[i],medication[j].get_id_num());
+                    j++;
+                    if (j == medication.getTamlog())
+                        j=0;
+                    k++;
+                }
+                k=0;
+            }
+        }
 
         VDinamico<std::string> bufferCif;
             do {
@@ -343,10 +373,11 @@ int main(int argc, const char * argv[]) {
                                 std::cout<<"La farmacia " << bufferCif[i] << " no existe."<<std::endl;
                             }
                             else {
-                                PaMedicamento *med = &farm->buscaMedicam(3640);
+                                PaMedicamento *med = farm->buscaMedicam(3640);
                                 if (med == nullptr) {
                                     std::cout<<"La farmacia " << bufferCif[i] << " no vende el medicamento con ID=3640."<<std::endl;
-                                    farm->pedidoMedicam(3640);
+                                    //farm->pedidoMedicam(3640);
+                                    medi_express.suministrarFarmacia(*farm, 3640);
                                     std::cout<<"Se ha pedido el medicamento con ID=3640."<<std::endl;
                                 }
                                 else {
@@ -360,16 +391,38 @@ int main(int argc, const char * argv[]) {
                     case 3: {
                         std::cout<<"3.Buscar y contar todos los laboratorios con MAGNESIO"<<std::endl;
 
+                        VDinamico<PaMedicamento*> med = medi_express.buscarCompuesto("MAGNESIO");
+                        ListaEnlazada<Laboratorio> labs = medi_express.get_labs();
+                        ListaEnlazada<Laboratorio> labs_con_magnesio;
+
+                        for (ListaEnlazada<Laboratorio>::Iterador it = labs.iteradorInicio(); !it.fin(); it.siguiente()) {
+                            Laboratorio &lab = it.dato();
+                            for (int j = 0; j < med.getTamlog(); j++) {
+                                PaMedicamento* medi = med[j];
+                                if (medi->servidoPor() == lab.get_nombre_lab()) {
+                                    std::cout<<lab.get_nombre_lab()<<" tiene "<<medi->get_nombre()<<std::endl;
+                                    labs_con_magnesio.insertaFin(lab);
+                                }
+                            }
+                        }
+
+                        mostrarLaboratorios(&labs_con_magnesio);
+                        std::cout<<"Son un total de "<<labs_con_magnesio.tam()<<std::endl;
+
                         break;
                     }
                     case 4: {
-                        std::cout<<"4.PAREJAS: Localizar los medicamentos por nombre.Localizar todos los laboratorios "
-                        "que suministran a alguna farmacia medicamentos con  VIRUS "<<std::endl;
+                        std::cout<<"4.PAREJAS: Localizar todos los laboratorios que suministran a alguna "
+                                   "farmacia medicamentos con VIRUS"<<std::endl;
+
+
+
                         break;
                     }
 
                 }
         }while(opcion>0 && opcion<5);
+        mostrarFarmaciasMedicamento(medi_express);
     } catch (std::exception) {
             std::cerr<<"ERROR";
     }

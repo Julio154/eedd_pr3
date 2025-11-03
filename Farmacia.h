@@ -27,10 +27,14 @@ public:
 
     Farmacia(const std::string &cif, const std::string &provincia, const std::string &localidad,
         const std::string &nombre, const std::string &direccion, const std::string &cod_postal);
+    Farmacia(const Farmacia &other);
 
-    PaMedicamento& buscaMedicam(int id_num);
+
+    PaMedicamento *buscaMedicam(int id_num);
+    VDinamico<PaMedicamento*> buscaMedicam(std::string nombreMed);
     void pedidoMedicam(int id_num);
-    void dispensaMedicam(PaMedicamento pa);
+    void dispensaMedicam(PaMedicamento *pa);
+    VDinamico<PaMedicamento*> medicamentosDispensados(){return dispense;}
 
     std::string get_cif() const;
     void set_cif(const std::string &cif);

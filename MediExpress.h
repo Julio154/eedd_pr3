@@ -42,12 +42,14 @@ class MediExpress
 
         void set_labs(const ListaEnlazada<Laboratorio> &labs);
 
-        VDinamico<PaMedicamento> get_medication() const{ return medication; };
+        VDinamico<PaMedicamento*> get_medication();
 
-        PaMedicamento buscarCompuesto(int id_num); //para enlazar un medicamento a una farmacia
+        PaMedicamento *buscarCompuesto(int id_num); //para enlazar un medicamento a una farmacia
         Farmacia* buscarFarmacia(std::string cif);
         void suministrarFarmacia(Farmacia &f, int id_num);
         ListaEnlazada<Laboratorio> buscarLabs(PaMedicamento med);
+
+        Avl<Farmacia> get_pharmacy(){return pharmacy;};
 
 };
 

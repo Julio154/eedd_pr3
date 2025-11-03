@@ -8,44 +8,44 @@
 
 
 class Laboratorio {
-private:
-    int id;
-    std::string nombreLab;
-    std::string direccion;
-    std::string codPostal;
-    std::string localidad;
+    private:
+        int id;
+        std::string nombreLab;
+        std::string direccion;
+        std::string codPostal;
+        std::string localidad;
 
-public:
+    public:
 
-    Laboratorio();
+        Laboratorio();
 
-    Laboratorio(const Laboratorio &otro);
+        Laboratorio(const Laboratorio &otro);
 
-    Laboratorio(int id, const std::string &nombre_lab, const std::string &direccion, const std::string &cod_postal,
-                const std::string &localidad);
+        Laboratorio(int id, const std::string &nombre_lab, const std::string &direccion, const std::string &cod_postal,
+                    const std::string &localidad);
 
-    ~Laboratorio();
+        ~Laboratorio();
 
-    int get_id() const;
+        int get_id() const;
 
-    void set_id(int id);
+        void set_id(int id);
 
-    std::string get_nombre_lab() const;
+        std::string get_nombre_lab() const;
 
-    void set_nombre_lab(const std::string &nombre_lab);
+        void set_nombre_lab(const std::string &nombre_lab);
 
-    std::string get_direccion() const;
+        std::string get_direccion() const;
 
-    void set_direccion(const std::string &direccion);
+        void set_direccion(const std::string &direccion);
 
-    std::string get_cod_postal() const;
+        std::string get_cod_postal() const;
 
-    void set_cod_postal(const std::string &cod_postal);
+        void set_cod_postal(const std::string &cod_postal);
 
-    std::string get_localidad() const;
+        std::string get_localidad() const;
 
-    void set_localidad(const std::string &localidad);
-    Laboratorio &operator=(const Laboratorio &v);
+        void set_localidad(const std::string &localidad);
+        Laboratorio &operator=(const Laboratorio &v);
 };
 
 
