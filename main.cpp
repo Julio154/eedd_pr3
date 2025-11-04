@@ -36,8 +36,7 @@ void menu2(){
             <<"2.Para todas las farmacias anteriores, buscar si alguna de ellas dispensa el ÓXIDO DE "<<
             "MAGNESIO” con ID=3640, y si no lo venden, hacer el pedido correspondiente. "<<std::endl
             <<"3.Buscar y contar todos los laboratorios con MAGNESIO"<<std::endl
-            <<"4.PAREJAS: Localizar los medicamentos por nombre.Localizar todos los laboratorios "
-              "que suministran a alguna farmacia medicamentos con  VIRUS "<<std::endl;
+            <<"4.PAREJAS: Localizar todos los laboratorios que suministran a alguna farmacia medicamentos con  VIRUS "<<std::endl;
 }
 /**
  * @brief funcion que nos muestra la lista de enteros
@@ -61,7 +60,7 @@ void mostrarLaboratorios(ListaEnlazada<Laboratorio> *lista){
 
 void mostrarFarmaciasMedicamento(MediExpress medi_express) {
     std::cout<<"Farmacias con medicamentos: "<<std::endl;
-    VDinamico<Farmacia*> farmacias = medi_express.get_pharmacy().recorreInorden();
+    VDinamico<Farmacia*> farmacias = medi_express.get_pharmacy()->recorreInorden();
     for (int i = 0; i < farmacias.getTamlog(); i++) {
         std::cout<<farmacias[i]->get_nombre()<<"  :  "<<std::endl;
         for (int j = 0; j < farmacias[i]->medicamentosDispensados().getTamlog();j++) {
@@ -306,7 +305,8 @@ int main(int argc, const char * argv[]) {
             medi_express.suministrarMed();
 
         {
-            VDinamico<Farmacia*> farms = farmacias_avl.recorreInorden();
+            Avl<Farmacia> *farmacias = medi_express.get_pharmacy();
+            VDinamico<Farmacia*> farms = farmacias->recorreInorden();
 
             int j= 0;
             for (int i = 0; i < farms.getTamlog(); i++) {
@@ -415,7 +415,31 @@ int main(int argc, const char * argv[]) {
                         std::cout<<"4.PAREJAS: Localizar todos los laboratorios que suministran a alguna "
                                    "farmacia medicamentos con VIRUS"<<std::endl;
 
+                        Avl<Farmacia> *farmacias = medi_express.get_pharmacy();
+                        VDinamico<Farmacia*> farm = farmacias->recorreInorden();
 
+                        VDinamico<std::string> labs_virus;
+
+                        for (int i = 0; i < farm.getTamlog(); i++) {
+                            Farmacia *farm1 = farm[i];
+                            VDinamico<PaMedicamento*> med_virus = farm1->buscaMedicam("VIRUS");
+                            for (int j = 0; j < med_virus.getTamlog(); j++) {
+                                PaMedicamento *medi = med_virus[j];
+                                std::cout<<farm1->get_nombre()<<" tiene "<<medi->get_nombre()<<std::endl;
+
+                                std::string inserto = "Farmacia: ";
+                                inserto += farm1->get_nombre();
+                                inserto += " Medicamento: ";
+                                inserto += medi->get_nombre();
+                                inserto += " Laboratorio: ";
+                                inserto += medi->servidoPor();
+
+                                labs_virus.insertar(inserto);
+                            }
+                        }
+
+                        for (int i = 0; i < labs_virus.getTamlog(); i++)
+                            std::cout<<labs_virus[i]<<std::endl;
 
                         break;
                     }

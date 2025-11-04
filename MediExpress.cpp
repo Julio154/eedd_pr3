@@ -145,3 +145,8 @@ ListaEnlazada<Laboratorio> MediExpress::buscarLabs(PaMedicamento med) {
     return nuevaLista;
 }
 
+Avl<Farmacia> *MediExpress::get_pharmacy() {
+    return &pharmacy;
+}
+
+

@@ -49,7 +49,7 @@ class MediExpress
         void suministrarFarmacia(Farmacia &f, int id_num);
         ListaEnlazada<Laboratorio> buscarLabs(PaMedicamento med);
 
-        Avl<Farmacia> get_pharmacy(){return pharmacy;};
+        Avl<Farmacia> *get_pharmacy();
 
 };
 
